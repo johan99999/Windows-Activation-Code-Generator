@@ -8,10 +8,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import windowsactivationcodegenerator.app.entity.Windows7;
 import windowsactivationcodegenerator.app.model.AddWin7CodeRequest;
 import windowsactivationcodegenerator.app.model.ApiResponse;
+import windowsactivationcodegenerator.app.model.UpdateWin7CodeRequest;
 import windowsactivationcodegenerator.app.model.Windows7Response;
 import windowsactivationcodegenerator.app.repository.Windows7Repository;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.MockMvcBuilder.*;
@@ -52,6 +56,31 @@ class Windows7ControllerTest {
             });
             assertNotNull(response);
             assertNull(response.getErrors());
+        });
+    }
+
+    @Test
+    void updateExistingWindows7ActivationCode() throws Exception {
+        Optional<Windows7> windows7 = windows7Repository.findById(232);
+        UpdateWin7CodeRequest request = new UpdateWin7CodeRequest();
+        request.setActivationCode("test code 2");
+        request.setVersion("test version 2");
+
+        mockMvc.perform(
+                patch("/api/windows_7/" + windows7.get().getId())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+        ).andExpectAll(
+                status().isOk()
+        ).andDo(result -> {
+            ApiResponse<Windows7Response> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+            });
+            assertNotNull(response);
+            assertNull(response.getErrors());
+            assertEquals(windows7.get().getId(), response.getData().getId());
+            assertEquals(request.getActivationCode(), response.getData().getActivationCode());
+            assertEquals(request.getVersion(), response.getData().getVersion());
         });
     }
 }

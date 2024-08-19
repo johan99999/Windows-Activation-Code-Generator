@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import windowsactivationcodegenerator.app.entity.Windows7;
 import windowsactivationcodegenerator.app.model.AddWin7CodeRequest;
+import windowsactivationcodegenerator.app.model.UpdateWin7CodeRequest;
 import windowsactivationcodegenerator.app.model.Windows7Response;
 import windowsactivationcodegenerator.app.repository.Windows7Repository;
 
@@ -41,6 +42,21 @@ public class Windows7Service {
         windows7Repository.save(windows7);
 
         return toResponse(windows7);
+    }
+
+    @Transactional
+    public Windows7Response update(Integer id, UpdateWin7CodeRequest request) {
+        validationService.validate(request);
+
+        Windows7 update = windows7Repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Activation Code with the ID doesn't exist"));
+
+        update.setActivationCode(request.getActivationCode());
+        update.setVersion(request.getVersion());
+        update.setCreatedAt(LocalDateTime.now());
+        windows7Repository.save(update);
+
+        return toResponse(update);
     }
 
     private Windows7Response toResponse(Windows7 windows7) {
