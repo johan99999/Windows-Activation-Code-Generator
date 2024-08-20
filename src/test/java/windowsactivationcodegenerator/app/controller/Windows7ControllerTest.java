@@ -83,4 +83,23 @@ class Windows7ControllerTest {
             assertEquals(request.getVersion(), response.getData().getVersion());
         });
     }
+
+    @Test
+    void deleteWindows7ActivationCode() throws Exception {
+
+        Optional<Windows7> windows7 = windows7Repository.findById(231);
+
+        mockMvc.perform(
+                delete("/api/windows_7/" + windows7.get().getId())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpectAll(
+                status().isOk()
+        ).andDo(result -> {
+            ApiResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+            });
+            assertNull(response.getErrors());
+            assertEquals("OK", response.getData());
+        });
+    }
 }

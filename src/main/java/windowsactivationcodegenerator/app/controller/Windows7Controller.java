@@ -34,9 +34,13 @@ public class Windows7Controller {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse<Windows7Response> update(@PathVariable("id") Integer id, @RequestBody UpdateWin7CodeRequest request){
-
-
         Windows7Response response = windows7Service.update(id, request);
         return ApiResponse.<Windows7Response>builder().data(response).build();
+    }
+
+    @DeleteMapping(path = "/api/windows_7/{id}")
+    public ApiResponse<String> delete (@PathVariable("id") Integer id){
+         windows7Service.delete(id);
+         return ApiResponse.<String>builder().data("OK").build();
     }
 }

@@ -59,6 +59,12 @@ public class Windows7Service {
         return toResponse(update);
     }
 
+    @Transactional
+    public void delete(Integer id) {
+        Windows7 windows7 = windows7Repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Activation Code with the ID doesn't exist"));
+        windows7Repository.delete(windows7);
+    }
+
     private Windows7Response toResponse(Windows7 windows7) {
         return Windows7Response.builder()
                 .id(windows7.getId())
