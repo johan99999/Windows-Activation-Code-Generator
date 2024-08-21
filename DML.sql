@@ -244,3 +244,13 @@ values ("Windows 7 Home Premium Retail", "P3VBT-2QBBP-BT9TQ-GQQ8H-M9KV4"),
 
 
 delete from windows_7;
+
+
+
+insert into windows_8 (version, activation_code)
+values ("Windows 8", "46V6N-VCBYR-KT9KT-6Y4YF-QGJYH"),
+       ("Windows 8 Professional", "V7C3N-3W6CM-PDKR2-KW8DQ-RJMRD"),
+       ("Windows 8 N", "7QNT4-HJDDR-T672J-FBFP4-2J8X9"),
+       ("Windows 8 Professional N", "4NX4X-C98R3-KBR22-MGBWC-D667X"),
+       ("Windows 8 Single Language N", "NH7GX-2BPDT-FDPBD-WD893-RJMQ4"),
+       ("Windows 8.1 Preview", "NTTX3-RV7VB-T7X7F-WQYYY-9Y92");
